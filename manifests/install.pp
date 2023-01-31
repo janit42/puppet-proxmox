@@ -2,7 +2,7 @@
 class proxmox::install {
   Class['apt::update'] -> Package <| provider == 'apt' |>
 
-  ->package { ['proxmox-ve', 'postfix', 'open-iscsi']:
+  ->package { ['proxmox-ve', 'open-iscsi']:
     ensure => 'installed',
     notify => Reboot['proxmox_install'],
   }
