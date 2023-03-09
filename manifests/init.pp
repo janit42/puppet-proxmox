@@ -7,16 +7,13 @@
 #   include proxmox
 #
 class proxmox {
-
   # Make sure the module is run on a debian 10
-  if( $facts['os']['name'] != 'Debian' )
-  {
+  if( $facts['os']['name'] != 'Debian' ) {
     fail('This modules only works on Debian.')
   }
 
-  $debian_version = Integer($facts['os']['release']['major'])
-  if ( $debian_version < 10 ) or ( $debian_version > 11 )
-  {
+  $debian_version = $facts['os']['release']['major']
+  if ( ( versioncmp($debian_version, '10' ) < 0 ) or ( versioncmp($debian_version, '11') > 0 ) ) {
     fail('This modules only works on Debian 10 or 11 ("buster" & "bullseye").')
   }
 
@@ -25,6 +22,6 @@ class proxmox {
   contain proxmox::cleanup # Remove mainline linux kernel
 
   Class['proxmox::packages']
-->Class['proxmox::install']
-->Class['proxmox::cleanup']
+  ->Class['proxmox::install']
+  ->Class['proxmox::cleanup']
 }

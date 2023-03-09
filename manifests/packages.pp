@@ -11,13 +11,13 @@ class proxmox::packages {
   }
 
   file { $key_path:
-    ensure => 'present',
+    ensure => 'file',
     source => $key_url, # Proxmox doesn't provide a proper https path to their gpg key
     owner  => 'root',
     group  => 'root',
-    mode   => '0644'
+    mode   => '0644',
   }
-->apt::source { 'proxmox':
+  ->apt::source { 'proxmox':
     ensure   => 'present',
     comment  => 'This is the proxmox stable repo',
     location => 'http://download.proxmox.com/debian/pve',
@@ -26,10 +26,9 @@ class proxmox::packages {
     notify   => Class['apt::update'],
   }
 
-~>exec { 'apt-full-upgrade':
+  ~>exec { 'apt-full-upgrade':
     command     => '/usr/bin/apt full-upgrade -y',
     refreshonly => true,
     require     => Exec['apt_update'],
   }
-
 }

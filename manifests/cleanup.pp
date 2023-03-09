@@ -6,9 +6,9 @@ class proxmox::cleanup {
     default => '',
   }
   package { ['linux-image-amd64', $kernels, 'os-prober']:
-    ensure => 'absent'
+    ensure => 'absent',
   }
-~>exec { '/usr/sbin/update-grub':
+  ~>exec { '/usr/sbin/update-grub':
     refreshonly => true,
   }
 }
